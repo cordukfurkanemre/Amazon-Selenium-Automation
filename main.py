@@ -6,7 +6,7 @@ import time
 
 # stage 1: load the driver
 options = webdriver.ChromeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
 driver = webdriver.Chrome(options=options)
 time.sleep(2)
 
@@ -14,18 +14,17 @@ time.sleep(2)
 driver.get("https://www.amazon.de/?th=1&psc=1&language=en")
 time.sleep(1)
 
-# stage 3: change the address
-driver.find_element(By.XPATH,"//*[@id='glow-ingress-line2']").click()
-
+# stage 3: change the delivery country
+driver.find_element(By.XPATH, "//*[@id='glow-ingress-line2']").click()
 time.sleep(1)
-Select(driver.find_element(By.ID,'GLUXCountryList')).select_by_value("US")
+Select(driver.find_element(By.ID, "GLUXCountryList")).select_by_value("US")
 time.sleep(1)
 
-
+# stage 4: load unique ASINs
 with open("asins.txt", encoding="utf-8") as file:
-    asinlist = [line.strip() for line in file if line.strip()]
+    asinlist = list(dict.fromkeys(line.strip() for line in file if line.strip()))
 
-# stage 3: parse the page
+# stage 5: read text safely
 def get_text(by, selector):
     elements = driver.find_elements(by, selector)
 
@@ -46,7 +45,7 @@ for index, asin in enumerate(asinlist, start=1):
         price = get_text(By.CSS_SELECTOR, ".a-price .a-offscreen")
         delivery = get_text(
             By.ID,
-            "mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE"
+            "mir-layout-DELIVERY_BLOCK-slot-PRIMARY_DELIVERY_MESSAGE_LARGE",
         )
 
         print(f"\n[{index}] {asin}")
@@ -58,4 +57,5 @@ for index, asin in enumerate(asinlist, start=1):
     except NoSuchWindowException:
         print("\nBrowser window closed.")
         break
+
 driver.quit()
