@@ -1,24 +1,23 @@
-# Amazon Selenium Scraper
+# Amazon Selenium Automation
 
-A simple Python Selenium scraper that reads Amazon ASINs from a text file and retrieves available product information from Amazon.de.
+A lightweight Python automation project that uses Selenium to read Amazon ASINs from a text file and retrieve available product information from Amazon.de.
 
 ## Features
 
 - Reads ASINs from `asins.txt`
-- Retrieves:
-  - Product title
-  - Price
-  - Delivery information
-- Displays `Not available` when a field cannot be found
+- Opens Amazon.de in English
+- Sets the delivery country to the United States
+- Retrieves available product title, price, and delivery information
+- Prints `Not available` when a field cannot be found
 - Stops cleanly if the browser window is closed
 - Uses Selenium Manager, so ChromeDriver does not need to be installed manually
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.11+ (tested)
 - Google Chrome
 
-Install the required package:
+Install the dependency:
 
 ```bash
 pip install -r requirements.txt
@@ -34,7 +33,7 @@ B004YND1ZA
 B08KS2TZ64
 ```
 
-Run the scraper:
+Run the automation:
 
 ```bash
 python main.py
@@ -50,7 +49,7 @@ Delivery: FREE delivery August 25
 ------------------------------------------------------------
 ```
 
-If a value cannot be retrieved:
+If a field cannot be retrieved, the script keeps the remaining data:
 
 ```text
 Price: Not available
@@ -59,13 +58,13 @@ Price: Not available
 ## Project Structure
 
 ```text
-Selenium/
+Amazon-Selenium-Automation/
 ├── main.py
 ├── asins.txt
 ├── requirements.txt
 └── .gitignore
 ```
 
-## Note
+## Notes
 
-Amazon frequently changes its page structure. CSS selectors or element IDs may need to be updated if product information can no longer be retrieved.
+Amazon pages and selectors can change over time, so element IDs or CSS selectors may occasionally need to be updated. Product price and delivery information can also vary by product, seller, and selected delivery country.
